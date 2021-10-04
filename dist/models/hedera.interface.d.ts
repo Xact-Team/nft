@@ -11,7 +11,12 @@ export interface NFTDto {
     media: string;
     supply: number;
     customRoyaltyFee: CustomFee | null;
-    customNFTJson: Object | null;
+    attributes: NftAttribute[];
+    customProperties: Object | null;
+}
+export interface NftAttribute {
+    trait_type: string;
+    value: string;
 }
 export interface NftCreated {
     url: string;

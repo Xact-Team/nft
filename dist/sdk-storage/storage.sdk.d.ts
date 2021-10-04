@@ -1,5 +1,5 @@
 import { NFTDto } from '../models/hedera.interface';
-export declare function storeMetadata({ token, name, description, supply, creator, category, cid }: NFTDto & {
+export declare function storeMetadata({ token, name, description, supply, creator, category, customProperties, customRoyaltyFee, attributes, cid }: NFTDto & {
     token: string;
     cid: string;
 }): Promise<any>;

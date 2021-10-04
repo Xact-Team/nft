@@ -14,7 +14,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.deleteNFT = exports.storeNFT = exports.storeMetadata = void 0;
 const axios_1 = __importDefault(require("axios"));
-function storeMetadata({ token, name, description, supply, creator, category, cid }) {
+function storeMetadata({ token, name, description, supply, creator, category, customProperties, customRoyaltyFee, attributes, cid }) {
     return __awaiter(this, void 0, void 0, function* () {
         return axios_1.default.post('https://nft.storage/api/upload', {
             name,
@@ -22,6 +22,9 @@ function storeMetadata({ token, name, description, supply, creator, category, ci
             creator,
             category,
             supply,
+            properties: customProperties,
+            royalties: customRoyaltyFee,
+            attributes,
             image: { "type": "string", "description": `https://cloudflare-ipfs.com/ipfs/${cid}` }
         }, {
             headers: {

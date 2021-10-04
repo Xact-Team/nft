@@ -12,19 +12,37 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteNFT = exports.storeNFT = void 0;
+exports.deleteNFT = exports.storeNFT = exports.storeMetadata = void 0;
 const axios_1 = __importDefault(require("axios"));
-function storeNFT({ token, name, description, creator, category, media }) {
+function storeMetadata({ token, name, description, supply, creator, category, customProperties, customRoyaltyFee, attributes, cid }) {
     return __awaiter(this, void 0, void 0, function* () {
         return axios_1.default.post('https://nft.storage/api/upload', {
             name,
-            description,
+            description: { "type": "string", "description": description },
             creator,
             category,
-            supply: 1,
-            photo: media
+            supply,
+            properties: customProperties,
+            royalties: customRoyaltyFee,
+            attributes,
+            image: { "type": "string", "description": `https://cloudflare-ipfs.com/ipfs/${cid}` }
         }, {
             headers: {
+                common: {
+                    Authorization: `Bearer ${token}`,
+                },
+            },
+        }).then((res) => {
+            return res.data.value.cid;
+        });
+    });
+}
+exports.storeMetadata = storeMetadata;
+function storeNFT({ token, media }) {
+    return __awaiter(this, void 0, void 0, function* () {
+        return axios_1.default.post('https://api.nft.storage/upload', media, {
+            headers: {
+                "Content-Type": "image/*",
                 common: {
                     Authorization: `Bearer ${token}`,
                 },

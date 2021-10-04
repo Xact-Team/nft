@@ -11,12 +11,32 @@ export interface NFTDto {
     media: string;
     supply: number;
     customRoyaltyFee: CustomFee | null;
+    attributes: NftAttribute[];
+    customProperties: Object | null;
+}
+export interface NftAttribute {
+    trait_type: string;
+    value: string;
 }
 export interface NftCreated {
     url: string;
     txId: string;
     tokenId: string;
     nftIds: Array<string>;
+}
+export interface CreateNFT {
+    name: string;
+    creator: string;
+    category: CategoryNFT;
+    cid: string;
+    supply: number;
+    customFee?: CustomFee | null;
+    attributes?: NFTProperties[] | null;
+    customProperties?: object | null;
+}
+export interface NFTProperties {
+    trait_type: string;
+    value: string;
 }
 export interface Fees {
     hbar: number;

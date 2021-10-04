@@ -73,7 +73,7 @@ class ClientNFT {
         return __awaiter(this, void 0, void 0, function* () {
             let cidMetadata;
             let cid;
-            if (!createNFTDto.media || !createNFTDto.name) {
+            if (!createNFTDto.media && !createNFTDto.name) {
                 js_logger_1.default.error('name and media parameters must be defined when calling this method... Check the Usage on https://www.npmjs.com/package/@xact-wallet-sdk/nft#usage');
                 return Promise.reject('Please define at least a Media and a Name for your NFT !');
             }
@@ -83,7 +83,8 @@ class ClientNFT {
                 yield this.hederaSdk.checkBalance();
                 /* Storing the Media */
                 js_logger_1.default.info('Saving the media on FileCoin...');
-                cid = yield storage_sdk_1.storeNFT(Object.assign({ token: this.nftStorageApiKey }, createNFTDto));
+                const nftStoreObj = Object.assign({ token: this.nftStorageApiKey }, createNFTDto);
+                cid = yield storage_sdk_1.storeNFT(nftStoreObj);
                 js_logger_1.default.info('Saving the metadata on FileCoin...');
                 cidMetadata = yield storage_sdk_1.storeMetadata(Object.assign(Object.assign({ token: this.nftStorageApiKey }, createNFTDto), { cid }));
                 /* Create the NFT */

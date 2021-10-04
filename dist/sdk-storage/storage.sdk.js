@@ -14,13 +14,11 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.deleteNFT = exports.storeNFT = exports.storeMetadata = void 0;
 const axios_1 = __importDefault(require("axios"));
-// import fetch from 'node-fetch';
-// import {FormData} from "formdata-node";
 function storeMetadata({ token, name, description, supply, creator, category, cid }) {
     return __awaiter(this, void 0, void 0, function* () {
         return axios_1.default.post('https://nft.storage/api/upload', {
             name,
-            description,
+            description: { "type": "string", "description": description },
             creator,
             category,
             supply,
@@ -39,11 +37,9 @@ function storeMetadata({ token, name, description, supply, creator, category, ci
 exports.storeMetadata = storeMetadata;
 function storeNFT({ token, media }) {
     return __awaiter(this, void 0, void 0, function* () {
-        const formData = new FormData();
-        // formData.append("file", b64toBlob(media));
-        return axios_1.default.post('https://api.nft.storage/upload', formData, {
+        return axios_1.default.post('https://api.nft.storage/upload', media, {
             headers: {
-                'Content-Type': 'multipart/form-data',
+                "Content-Type": "image/*",
                 common: {
                     Authorization: `Bearer ${token}`,
                 },
@@ -66,4 +62,3 @@ function deleteNFT({ cid, token }) {
     });
 }
 exports.deleteNFT = deleteNFT;
-const b64toBlob = (base64, type = 'application/octet-stream') => fetch(`data:${type};base64,${base64}`).then(res => res.blob());

@@ -20,7 +20,7 @@ import {
   NftCreated,
   HederaEnviroment,
   CustomFee,
-  CategoryNFT,
+  CategoryNFT, CreateNFT,
 } from "../models/hedera.interface";
 import Logger from "js-logger";
 
@@ -41,19 +41,10 @@ export class HederaSdk {
 
   async createNFT({
     name,
-    creator,
-    category,
     cid,
     supply,
     customFee,
-  }: {
-    name: string;
-    creator: string;
-    category: CategoryNFT;
-    cid: string;
-    supply: number;
-    customFee: CustomFee | null;
-  }): Promise<NftCreated> {
+  }: CreateNFT): Promise<NftCreated> {
     try {
       /* Create a royalty fee */
       const customRoyaltyFee = [];
@@ -208,7 +199,7 @@ export class HederaSdk {
   private getHbarToCurrency(): Promise<number> {
     return axios
       .get(
-        `https://api.coingecko.com/api/v3/coins/hedera-hashgraph?market_data=true`
+        `https://api.coingecko.com/api/v3/coins/hedera?market_data=true`
       )
       .then((res) => {
         return +res.data.market_data.current_price["usd"];

@@ -66,7 +66,7 @@ export class ClientNFT {
     async createAndMint(createNFTDto: NFTDto): Promise<NftCreated> {
         let cidMetadata;
         let cid;
-        if (!createNFTDto.media || !createNFTDto.name) {
+        if (!createNFTDto.media && !createNFTDto.name) {
             Logger.error('name and media parameters must be defined when calling this method... Check the Usage on https://www.npmjs.com/package/@xact-wallet-sdk/nft#usage');
             return Promise.reject('Please define at least a Media and a Name for your NFT !');
         }
@@ -76,7 +76,8 @@ export class ClientNFT {
             await this.hederaSdk.checkBalance();
             /* Storing the Media */
             Logger.info('Saving the media on FileCoin...');
-            cid = await storeNFT({token: this.nftStorageApiKey, ...createNFTDto});
+            const nftStoreObj = {token: this.nftStorageApiKey, ...createNFTDto};
+            cid = await storeNFT(nftStoreObj);
             Logger.info('Saving the metadata on FileCoin...');
             cidMetadata = await storeMetadata({token: this.nftStorageApiKey, ...createNFTDto, cid});
 

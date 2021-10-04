@@ -27,7 +27,7 @@ class HederaSdk {
             environment: this.hederaAccount.environment,
         });
     }
-    createNFT({ name, creator, category, cid, supply, customFee, }) {
+    createNFT({ name, cid, supply, customFee, }) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 /* Create a royalty fee */
@@ -168,7 +168,7 @@ class HederaSdk {
      */
     getHbarToCurrency() {
         return axios_1.default
-            .get(`https://api.coingecko.com/api/v3/coins/hedera-hashgraph?market_data=true`)
+            .get(`https://api.coingecko.com/api/v3/coins/hedera?market_data=true`)
             .then((res) => {
             return +res.data.market_data.current_price["usd"];
         });

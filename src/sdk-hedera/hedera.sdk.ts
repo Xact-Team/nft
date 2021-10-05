@@ -7,20 +7,16 @@ import {
   NftId,
   PrivateKey,
   TokenCreateTransaction,
-  TokenId,
   TokenMintTransaction,
-  TokenNftInfoQuery,
   TokenSupplyType,
   TokenType,
 } from "@hashgraph/sdk";
-import axios from "axios";
 import {
   Fees,
   HederaAccount,
   NftCreated,
   HederaEnviroment,
-  CustomFee,
-  CategoryNFT, CreateNFT,
+  CreateNFT,
 } from "../models/hedera.interface";
 import Logger from "js-logger";
 
@@ -199,11 +195,11 @@ export class HederaSdk {
   private getHbarToCurrency(): Promise<number> {
     return axios
       .get(
-        `https://api.coingecko.com/api/v3/coins/hedera?market_data=true`
+        `https://api.coingecko.com/api/v3/coins/hedera-hashgraph?market_data=true`
       )
       .then((res) => {
         return +res.data.market_data.current_price["usd"];
-      });
+      })
   }
 
   private wait(ms: number) {

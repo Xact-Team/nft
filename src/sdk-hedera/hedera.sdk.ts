@@ -19,6 +19,7 @@ import {
   CreateNFT,
 } from "../models/hedera.interface";
 import Logger from "js-logger";
+import axios, {AxiosResponse} from 'axios';
 
 const HEDERA_CREATE_NFT_FEES = 1;
 
@@ -197,7 +198,7 @@ export class HederaSdk {
       .get(
         `https://api.coingecko.com/api/v3/coins/hedera-hashgraph?market_data=true`
       )
-      .then((res) => {
+      .then((res: AxiosResponse) => {
         return +res.data.market_data.current_price["usd"];
       })
   }

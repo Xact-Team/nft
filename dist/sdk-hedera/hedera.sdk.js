@@ -14,9 +14,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.HederaSdk = void 0;
 const sdk_1 = require("@hashgraph/sdk");
-const axios_1 = __importDefault(require("axios"));
 const hedera_interface_1 = require("../models/hedera.interface");
 const js_logger_1 = __importDefault(require("js-logger"));
+const axios_1 = __importDefault(require("axios"));
 const HEDERA_CREATE_NFT_FEES = 1;
 class HederaSdk {
     constructor(hederaAccount) {
@@ -168,7 +168,7 @@ class HederaSdk {
      */
     getHbarToCurrency() {
         return axios_1.default
-            .get(`https://api.coingecko.com/api/v3/coins/hedera?market_data=true`)
+            .get(`https://api.coingecko.com/api/v3/coins/hedera-hashgraph?market_data=true`)
             .then((res) => {
             return +res.data.market_data.current_price["usd"];
         });

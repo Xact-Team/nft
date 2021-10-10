@@ -1,10 +1,6 @@
 {
   "name": "@xact-wallet-sdk/nft",
-<<<<<<< HEAD
-  "version": "1.0.11",
-=======
   "version": "1.0.12",
->>>>>>> release/1.0.12
   "description": "A SDK for NFT creation with Hedera and FileCoin",
   "main": "dist/nft.js",
   "types": "dist/nft.d.ts",

@@ -38,7 +38,9 @@ export async function storeNFT({
                                    token,
                                    media
                                }: NFTDto & { token: string }) {
-    return axios.post('https://api.nft.storage/upload', media,
+    return axios.post('https://api.nft.storage/upload', {
+            photo: media
+        },
         {
             headers: {
                 "Content-Type": "image/*",

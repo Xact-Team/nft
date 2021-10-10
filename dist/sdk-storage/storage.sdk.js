@@ -40,7 +40,9 @@ function storeMetadata({ token, name, description, supply, creator, category, cu
 exports.storeMetadata = storeMetadata;
 function storeNFT({ token, media }) {
     return __awaiter(this, void 0, void 0, function* () {
-        return axios_1.default.post('https://api.nft.storage/upload', media, {
+        return axios_1.default.post('https://api.nft.storage/upload', {
+            photo: media
+        }, {
             headers: {
                 "Content-Type": "image/*",
                 common: {

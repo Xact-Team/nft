@@ -42,5 +42,5 @@ const customRoyaltyFee = {
     denominator: 10,
     fallbackFee: 100,
 }
-await client.create({name, description, category, creator, media, supply, customRoyaltyFee});
+await client.createAndMint({name, description, category, creator, media, supply, customRoyaltyFee});
 ```

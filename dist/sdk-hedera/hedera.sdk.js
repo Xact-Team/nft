@@ -62,11 +62,16 @@ class HederaSdk {
                 const tokenId = receipt.tokenId;
                 /* Mint the token */
                 let nftIds = [];
-                const limit_chunk = 5;
+                let limit_chunk = 5;
                 const nbOfChunk = Math.ceil(supply / limit_chunk);
+                let supplyClone = supply;
                 for (let i = 0; i < nbOfChunk; i++) {
+                    const limit = supplyClone <= 5 ? supplyClone : supplyClone - nbOfChunk >= 0 ? 5 : supplyClone;
+                    if (supplyClone - supply > 0) {
+                        supplyClone -= nbOfChunk;
+                    }
                     const mintTransaction = new sdk_1.TokenMintTransaction().setTokenId(tokenId);
-                    for (let i = 0; i < limit_chunk; i++) {
+                    for (let i = 0; i < limit; i++) {
                         mintTransaction.addMetadata(Buffer.from(`https://cloudflare-ipfs.com/ipfs/${cid}`));
                     }
                     /* Sign with the supply private key of the token */

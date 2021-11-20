@@ -85,13 +85,8 @@ export class HederaSdk {
             /* Mint the token */
             let nftIds = [];
             let limit_chunk = 5;
-            const nbOfChunk = Math.ceil(supply / limit_chunk);
-            let supplyClone = supply;
-            for (let i = 0; i < nbOfChunk; i++) {
-                const limit = supplyClone <= 5 ? supplyClone : supplyClone - nbOfChunk >= 0 ? 5 :supplyClone;
-                if (supplyClone - supply > 0 ) {
-                    supplyClone -= nbOfChunk;
-                }
+            for (let idx = 0; idx < supply; idx += limit_chunk) {
+                const limit = idx + limit_chunk > supply ? supply - idx : limit_chunk;
                 const mintTransaction = new TokenMintTransaction().setTokenId(tokenId!);
 
                 for (let i = 0; i < limit; i++) {
@@ -114,6 +109,8 @@ export class HederaSdk {
                     nftIds.push(new NftId(tokenId!, nftSerial).toString());
                 }
             }
+
+
 
             return {
                 url: `https://cloudflare-ipfs.com/ipfs/${cid}`,

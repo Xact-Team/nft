@@ -20,7 +20,7 @@ export interface NFTDto {
     /* Custom Royalty Fees  */
     customRoyaltyFee: CustomFee | null;
     /* Attributes */
-    attributes: NftAttribute[]
+    attributes: NftAttribute[];
     /* Custom JSON Properties */
     customProperties: Object | null;
 }

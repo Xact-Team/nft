@@ -27,18 +27,20 @@ class HederaSdk {
             environment: this.hederaAccount.environment,
         });
     }
-    createNFT({ name, cid, supply, customFee, }) {
+    createNFT({ name, cid, supply, customFees, }) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 /* Create a royalty fee */
                 const customRoyaltyFee = [];
-                if (customFee) {
-                    const fee = new sdk_1.CustomRoyaltyFee()
-                        .setNumerator(customFee.numerator) // The numerator of the fraction
-                        .setDenominator(customFee.denominator) // The denominator of the fraction
-                        .setFallbackFee(new sdk_1.CustomFixedFee().setHbarAmount(new sdk_1.Hbar(customFee.fallbackFee))) // The fallback fee
-                        .setFeeCollectorAccountId(this.hederaAccount.accountId); // The account that will receive the royalty fee
-                    customRoyaltyFee.push(fee);
+                if (customFees) {
+                    customFees.map(customFee => {
+                        const fee = new sdk_1.CustomRoyaltyFee()
+                            .setNumerator(customFee.numerator) // The numerator of the fraction
+                            .setDenominator(customFee.denominator) // The denominator of the fraction
+                            .setFallbackFee(new sdk_1.CustomFixedFee().setHbarAmount(new sdk_1.Hbar(customFee.fallbackFee))) // The fallback fee
+                            .setFeeCollectorAccountId(this.hederaAccount.accountId); // The account that will receive the royalty fee
+                        customRoyaltyFee.push(fee);
+                    });
                 }
                 const supplyKey = sdk_1.PrivateKey.generate();
                 /* Create the NFT */

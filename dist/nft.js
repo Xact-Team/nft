@@ -95,7 +95,7 @@ class ClientNFT {
                     category: createNFTDto.category,
                     supply: createNFTDto.supply,
                     cid: cidMetadata,
-                    customFee: createNFTDto.customRoyaltyFee
+                    customFees: createNFTDto.customRoyaltyFee
                 });
                 js_logger_1.default.debug('Your NFT will be available soon on', res.url);
                 return res;

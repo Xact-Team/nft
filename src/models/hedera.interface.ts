@@ -18,7 +18,7 @@ export interface NFTDto {
     /* Quantity of NFT to create */
     supply: number;
     /* Custom Royalty Fees  */
-    customRoyaltyFee: CustomFee | null;
+    customRoyaltyFee: CustomFee[] | null;
     /* Attributes */
     attributes: NftAttribute[];
     /* Custom JSON Properties */
@@ -44,7 +44,7 @@ export interface CreateNFT {
     category: CategoryNFT,
     cid: string,
     supply: number,
-    customFee?: CustomFee | null
+    customFees?: CustomFee[] | null
     attributes?: NFTProperties[] | null
     customProperties?: object | null;
 }
@@ -77,4 +77,5 @@ export interface CustomFee {
     numerator: number,
     denominator: number,
     fallbackFee: number,
+    collectorAccountId: string,
 }

@@ -10,7 +10,7 @@ export interface NFTDto {
     creator: string;
     media: string;
     supply: number;
-    customRoyaltyFee: CustomFee | null;
+    customRoyaltyFee: CustomFee[] | null;
     attributes: NftAttribute[];
     customProperties: Object | null;
 }
@@ -30,7 +30,7 @@ export interface CreateNFT {
     category: CategoryNFT;
     cid: string;
     supply: number;
-    customFee?: CustomFee | null;
+    customFees?: CustomFee[] | null;
     attributes?: NFTProperties[] | null;
     customProperties?: object | null;
 }

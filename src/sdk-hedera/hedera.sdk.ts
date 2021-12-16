@@ -40,20 +40,22 @@ export class HederaSdk {
                         name,
                         cid,
                         supply,
-                        customFee,
+                        customFees,
                     }: CreateNFT): Promise<NftCreated> {
         try {
             /* Create a royalty fee */
-            const customRoyaltyFee = [];
-            if (customFee) {
-                const fee = new CustomRoyaltyFee()
-                    .setNumerator(customFee.numerator) // The numerator of the fraction
-                    .setDenominator(customFee.denominator) // The denominator of the fraction
-                    .setFallbackFee(
-                        new CustomFixedFee().setHbarAmount(new Hbar(customFee.fallbackFee))
-                    ) // The fallback fee
-                    .setFeeCollectorAccountId(this.hederaAccount.accountId); // The account that will receive the royalty fee
-                customRoyaltyFee.push(fee);
+            const customRoyaltyFee: any = [];
+            if (customFees) {
+                customFees.map(customFee =>{
+                    const fee = new CustomRoyaltyFee()
+                        .setNumerator(customFee.numerator) // The numerator of the fraction
+                        .setDenominator(customFee.denominator) // The denominator of the fraction
+                        .setFallbackFee(
+                            new CustomFixedFee().setHbarAmount(new Hbar(customFee.fallbackFee))
+                        ) // The fallback fee
+                        .setFeeCollectorAccountId(customFee.collectorAccountId); // The account that will receive the royalty fee
+                    customRoyaltyFee.push(fee);
+                })
             }
 
             const supplyKey = PrivateKey.generate();

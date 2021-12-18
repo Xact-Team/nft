@@ -16,12 +16,12 @@
 
 ## Usage
 
-```
+```typescript
 /* Create a new instance of Client */
 const hederaAccount = {
     accountId: 'YOUR_ACCOUNTID',
     privateKey: 'YOUR_PRIVATEKEY',
-    environment: HederaEnviroment.TESTNET, /* Default to MAINNET */
+    environment: HederaEnvironment.TESTNET, /* Default to MAINNET */
 };
     
 /* Construct an instance of Client */
@@ -30,7 +30,7 @@ const client = new ClientNFT({hederaAccount, nftStorageApiKey: 'YOUR_TOKEN', deb
 /* Get NFT's creation Fees */
 const fees = await client.getFees();
 
-/* Create NFT */
+/* Create NFT with unique metadata */
 const name = 'NFT Test';
 const description = 'Description of my NFT';
 const category = CategoryNFT.ART;
@@ -43,4 +43,29 @@ const customRoyaltyFee = {
     fallbackFee: 100,
 }
 await client.createAndMint({name, description, category, creator, media, supply, customRoyaltyFee});
+
+/* Create NFT with multiple metadata under one token */
+const name = 'NFT Test';
+const customRoyaltyFee = {
+    numerator: 1,
+    denominator: 10,
+    fallbackFee: 100,
+}
+const nfts = [
+    {
+        name: 'NFT Test 1',
+        description: 'Description of my first NFT',
+        category: CategoryNFT.ART,
+        creator: 'Johny.B',
+        media: '', /* File or Base64 format */
+    },
+    {
+        name: 'NFT Test 2',
+        description: 'Description of my second NFT',
+        category: CategoryNFT.ART,
+        creator: 'Johny.B',
+        media: '', /* File or Base64 format */
+    }
+]
+await client.createAndMint({name, customRoyaltyFee, nfts});
 ```

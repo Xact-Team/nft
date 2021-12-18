@@ -109,3 +109,6 @@ fabric.properties
 node_modules
 npm-debug.log
 packages/*/lib
+
+# Dist folder
+dist/*

@@ -31,6 +31,8 @@ export interface NFTDto extends NFT {
 export interface TokenDto {
   /** Name of the Token */
   name: string;
+  /** Symbol of the Token */
+  symbol: string;
   /** Custom Royalty Fees  */
   customRoyaltyFee: CustomFee[] | null;
   /** Array of nfts */
@@ -50,6 +52,7 @@ export interface NftCreated {
 
 export interface CreateNFT {
   name: string;
+  symbol: string;
   supply?: number;
   customFees?: CustomFee[] | null;
   cids: string[];

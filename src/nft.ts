@@ -1,3 +1,4 @@
+import Logger from 'js-logger';
 import {
   HederaAccount,
   HederaEnvironment,
@@ -5,14 +6,17 @@ import {
   NFTDto,
   TokenDto,
 } from 'src/models/hedera.interface';
-import { Fees } from './models/hedera.interface';
-import { HederaSdk } from './sdk-hedera/hedera.sdk';
-import { deleteNFT, storeMetadata, storeNFT } from './sdk-storage/storage.sdk';
-import Logger from 'js-logger';
-import { instanceOfNFTDto } from './utils/instanceOf';
+import { Fees } from 'src/models/hedera.interface';
+import { HederaSdk } from 'src/sdk-hedera/hedera.sdk';
+import {
+  deleteNFT,
+  storeMetadata,
+  storeNFT,
+} from 'src/sdk-storage/storage.sdk';
+import { instanceOfNFTDto } from 'src/utils/instanceOf';
 
 /* Export Interfaces */
-export * from './models/hedera.interface';
+export * from 'src/models/hedera.interface';
 
 export enum DebugLevel {
   DEBUG = 'DEBUG',
@@ -97,6 +101,7 @@ export class ClientNFT {
     if (instanceOfNFTDto(createDto)) {
       tokenDto = {
         name: createDto.name,
+        symbol: '',
         customRoyaltyFee: createDto.customRoyaltyFee,
         nfts: [createDto],
       };
@@ -130,7 +135,7 @@ export class ClientNFT {
         });
 
         Logger.info(
-          `Media [${index}/${tokenDto.nfts.length}] saved on FileCoin.`,
+          `Media [${index + 1}/${tokenDto.nfts.length}] saved on FileCoin.`,
         );
 
         cids.push(cid);
@@ -144,7 +149,7 @@ export class ClientNFT {
         });
 
         Logger.info(
-          `Metadata [${index}/${tokenDto.nfts.length}] saved on FileCoin.`,
+          `Metadata [${index + 1}/${tokenDto.nfts.length}] saved on FileCoin.`,
         );
 
         cidsMetadata.push(metadataCid);
@@ -154,6 +159,7 @@ export class ClientNFT {
       Logger.info('Creating the NFT on Hedera...');
       const res = await this.hederaSdk.createNFT({
         name: tokenDto.name,
+        symbol: tokenDto.symbol,
         customFees: tokenDto.customRoyaltyFee,
         supply: supply,
         cids: cidsMetadata,

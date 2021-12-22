@@ -26,6 +26,9 @@ module.exports = {
         'ts-expect-error': 'allow-with-description',
         minimumDescriptionLength: 2
       }
-    ]
+    ],
+    'no-restricted-imports': ["error", {
+      patterns: ['.*'],
+    }],
   },
 };

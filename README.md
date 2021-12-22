@@ -37,26 +37,30 @@ const category = CategoryNFT.ART;
 const creator = 'Johny.B';
 const media = ''; /* File or Base64 format */
 const supply = 1; /* Nb of NFT available */
-const customRoyaltyFee = {
+const customRoyaltyFee = [{
     numerator: 1,
     denominator: 10,
     fallbackFee: 100,
-}
+    collectorAccountId: '0.0.123456',
+}]
 await client.createAndMint({name, description, category, creator, media, supply, customRoyaltyFee});
 
 /* Create NFT with multiple metadata under one token */
 const name = 'NFT Test';
-const customRoyaltyFee = {
+const customRoyaltyFee = [{
     numerator: 1,
     denominator: 10,
     fallbackFee: 100,
-}
-const nfts = [
+    collectorAccountId: '0.0.123456',
+}]
+const nfts: NFT = [
     {
         name: 'NFT Test 1',
         description: 'Description of my first NFT',
         category: CategoryNFT.ART,
         creator: 'Johny.B',
+        attributes: [],
+        customProperties: null,
         media: '', /* File or Base64 format */
     },
     {
@@ -64,6 +68,8 @@ const nfts = [
         description: 'Description of my second NFT',
         category: CategoryNFT.ART,
         creator: 'Johny.B',
+        attributes: [],
+        customProperties: null,
         media: '', /* File or Base64 format */
     }
 ]

@@ -38,6 +38,7 @@ export class HederaSdk {
 
   async createNFT({
     name,
+    symbol,
     customFees,
     supply,
     cids,
@@ -63,11 +64,13 @@ export class HederaSdk {
       }
 
       const supplyKey = PrivateKey.generate();
+      const tokenSymbol = supply ? `IPFS://${cids[0]}` : symbol;
 
       /* Create the NFT */
       const tx = new TokenCreateTransaction()
         .setTokenType(TokenType.NonFungibleUnique)
         .setTokenName(name)
+        .setTokenSymbol(tokenSymbol)
         .setSupplyKey(supplyKey)
         .setSupplyType(TokenSupplyType.Finite)
         .setInitialSupply(0)
@@ -75,10 +78,6 @@ export class HederaSdk {
         .setTreasuryAccountId(this.hederaAccount.accountId)
         .setAutoRenewAccountId(this.hederaAccount.accountId)
         .setCustomFees(customRoyaltyFee);
-
-      if (supply) {
-        tx.setTokenSymbol(`IPFS://${cids[0]}`);
-      }
 
       const transaction = await tx.signWithOperator(this.client);
 

@@ -13,7 +13,7 @@
     "declaration": true,
     "strictPropertyInitialization": false,
     "outDir": "./dist",
-    "rootDir": "./",
+    "rootDir": "./src",
     "baseUrl": "./",
     "typeRoots": ["@types", "node_modules/@types"],
   },

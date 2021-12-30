@@ -1,6 +1,6 @@
 {
   "name": "@xact-wallet-sdk/nft",
-  "version": "1.0.15",
+  "version": "1.1.4",
   "description": "A SDK for NFT creation with Hedera and FileCoin",
   "main": "dist/nft.js",
   "types": "dist/nft.d.ts",
@@ -10,13 +10,23 @@
     "FileCoin",
     "SDK"
   ],
+  "files": [
+    "dist/**/*"
+  ],
   "scripts": {
-    "build": "tsc && npx tsc-alias",
+    "clean": "rm -rf dist/*",
+    "build": "npm run clean && tsc && npx tsc-alias",
     "publish": "npm run prepare; npm publish --access public",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
     "test": "echo \"Error: no test specified\" && exit 1",
+    "format": "prettier --write \"src/**/*.ts\"",
     "prepare": "husky install && npm run build",
-    "postinstall": "husky install"
+    "preversion": "npm run lint",
+    "version": "npm run format && git add -A src",
+    "postversion": "git push && git push --tags",
+    "postinstall": "husky install",
+    "prepublishOnly": "pinst --disable",
+    "postpublish": "pinst --enable"
   },
   "author": "Schnouz <tailorweb.contact@gmail.com>",
   "license": "MIT",
@@ -30,6 +40,7 @@
     "eslint-plugin-import": "^2.25.3",
     "eslint-plugin-prettier": "^4.0.0",
     "husky": "^7.0.4",
+    "pinst": "^2.1.6",
     "postinstall-postinstall": "^2.1.0",
     "prettier": "^2.5.1",
     "typescript": "^4.5.4"

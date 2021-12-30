@@ -1,64 +1,91 @@
 import axios from 'axios';
-import {NFTDto} from '../models/hedera.interface';
+import { NFTDto } from 'src/models/hedera.interface';
+import {
+  DeleteResponse,
+  UploadResponse,
+} from 'src/models/nft-storage.interface';
+
+const storageBaseUrl = 'https://api.nft.storage';
 
 export async function storeMetadata({
-                                        token,
-                                        name,
-                                        description,
-                                        supply,
-                                        creator,
-                                        category,
-                                        customProperties,
-                                        customRoyaltyFee,
-                                        attributes,
-                                        cid
-                                    }: NFTDto & { token: string, cid: string }) {
-    return axios.post('https://nft.storage/api/upload', {
-        name,
-        description: {"type": "string", "description": description},
-        creator,
-        category,
-        supply,
-        properties: customProperties,
-        royalties: customRoyaltyFee,
-        attributes,
-        image: {"type": "string", "description": `https://cloudflare-ipfs.com/ipfs/${cid}`}
-    }, {
-        headers: {
-            common: {
-                Authorization: `Bearer ${token}`,
-            },
-        },
-    }).then((res) => {
-        return res.data.value.cid;
-    });
+  token,
+  name,
+  description,
+  supply,
+  creator,
+  category,
+  customProperties,
+  customRoyaltyFee,
+  attributes,
+  cid,
+}: NFTDto & { token: string; cid: string }) {
+  const { data } = await axios.post<UploadResponse>(
+    `${storageBaseUrl}/upload`,
+    {
+      name,
+      description: { type: 'string', description: description },
+      creator,
+      category,
+      supply,
+      properties: customProperties,
+      royalties: customRoyaltyFee,
+      attributes,
+      image: {
+        type: 'string',
+        description: `https://cloudflare-ipfs.com/ipfs/${cid}`,
+      },
+    },
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    },
+  );
+
+  if (!data.ok) {
+    throw new Error(data.error.message);
+  }
+
+  return data.value.cid;
 }
 
 export async function storeNFT({
-                                   token,
-                                   media
-                               }: NFTDto & { token: string }) {
-    return axios.post('https://api.nft.storage/upload', {
-            photo: media
-        },
-        {
-            headers: {
-                "Content-Type": "image/*",
-                common: {
-                    Authorization: `Bearer ${token}`,
-                },
-            },
-        }).then((res) => {
-        return res.data.value.cid;
-    });
+  token,
+  media,
+}: {
+  token: string;
+  media: string;
+}) {
+  const { data } = await axios.post<UploadResponse>(
+    `${storageBaseUrl}/upload`,
+    {
+      photo: media,
+    },
+    {
+      headers: {
+        'Content-Type': 'image/*',
+        Authorization: `Bearer ${token}`,
+      },
+    },
+  );
+
+  if (!data.ok) {
+    throw new Error(data.error.message);
+  }
+
+  return data.value.cid;
 }
 
-export async function deleteNFT({cid, token}: { cid: string, token: string }) {
-    return axios.delete(`https://nft.storage/api/${cid}`, {
-        headers: {
-            common: {
-                Authorization: `Bearer ${token}`,
-            },
-        },
-    })
+export async function deleteNFT({
+  cid,
+  token,
+}: {
+  cid: string;
+  token: string;
+}) {
+  return axios.delete<DeleteResponse>(`${storageBaseUrl}/${cid}`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
 }

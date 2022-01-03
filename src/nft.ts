@@ -129,6 +129,7 @@ export class ClientNFT {
       /* Storing the Media */
       Logger.info('Saving the medias and metadata on FileCoin...');
       for (const [index, nft] of tokenDto.nfts.entries()) {
+        Logger.debug(`Saving the medias and metadata on FileCoin...${index}/${tokenDto.nfts.length}`);
         const cid = await storeNFT({
           token: this.nftStorageApiKey,
           media: nft.media,
@@ -166,6 +167,7 @@ export class ClientNFT {
         nfts: tokenDto.nfts,
       });
       Logger.debug('Your NFT will be available soon on', res.urls);
+      Logger.debug('Your NFT TokenID is', res.tokenId);
       return res;
     } catch (e) {
       Logger.error('An error occurred while creating the NFT...');

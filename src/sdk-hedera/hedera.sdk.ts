@@ -99,7 +99,8 @@ export class HederaSdk {
         const mintTransaction = new TokenMintTransaction().setTokenId(tokenId!);
 
         for (let i = 0; i < limit; i++) {
-          const url = `https://cloudflare-ipfs.com/ipfs/${cids[i]}`;
+          const cid = cids[i] || cids[0];
+          const url = `https://cloudflare-ipfs.com/ipfs/${cid}`;
 
           mintTransaction.addMetadata(Buffer.from(url));
 

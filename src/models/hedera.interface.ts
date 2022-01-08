@@ -86,6 +86,6 @@ export enum CategoryNFT {
 export interface CustomFee {
   numerator: number;
   denominator: number;
-  fallbackFee: number;
+  fallbackFee?: number;
   collectorAccountId: string;
 }

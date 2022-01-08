@@ -53,12 +53,14 @@ export class HederaSdk {
           const fee = new CustomRoyaltyFee()
             .setNumerator(customFee.numerator) // The numerator of the fraction
             .setDenominator(customFee.denominator) // The denominator of the fraction
-            .setFallbackFee(
-              new CustomFixedFee().setHbarAmount(
-                new Hbar(customFee.fallbackFee),
-              ),
-            ) // The fallback fee
-            .setFeeCollectorAccountId(customFee.collectorAccountId); // The account that will receive the royalty fee
+            if (customFee.fallbackFee) {
+              fee.setFallbackFee(
+                  new CustomFixedFee().setHbarAmount(
+                      new Hbar(customFee.fallbackFee),
+                  ),
+              ) // The fallback fee
+            }
+            fee.setFeeCollectorAccountId(customFee.collectorAccountId); // The account that will receive the royalty fee
           customRoyaltyFee.push(fee);
         });
       }

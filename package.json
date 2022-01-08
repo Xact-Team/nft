@@ -1,6 +1,6 @@
 {
   "name": "@xact-wallet-sdk/nft",
-  "version": "1.1.6",
+  "version": "1.1.7",
   "description": "A SDK for NFT creation with Hedera and FileCoin",
   "main": "dist/nft.js",
   "types": "dist/nft.d.ts",
@@ -24,7 +24,7 @@
     "preversion": "npm run lint",
     "version": "npm run format && git add -A src",
     "postversion": "git push && git push --tags",
-    "postinstall": "husky install",
+    "_postinstall": "husky install",
     "prepublishOnly": "pinst --disable",
     "postpublish": "pinst --enable"
   },

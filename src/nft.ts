@@ -8,11 +8,7 @@ import {
 } from 'src/models/hedera.interface';
 import { Fees } from 'src/models/hedera.interface';
 import { HederaSdk } from 'src/sdk-hedera/hedera.sdk';
-import {
-  deleteNFT,
-  storeMetadata,
-  storeNFT,
-} from 'src/sdk-storage/storage.sdk';
+import { deleteNFT, storeMetadata } from 'src/sdk-storage/storage.sdk';
 import { instanceOfNFTDto } from 'src/utils/instanceOf';
 
 /* Export Interfaces */
@@ -101,7 +97,7 @@ export class ClientNFT {
     if (instanceOfNFTDto(createDto)) {
       tokenDto = {
         name: createDto.name,
-        symbol: '',
+        symbol: createDto.creator,
         customRoyaltyFee: createDto.customRoyaltyFee,
         nfts: [createDto],
       };
@@ -122,34 +118,19 @@ export class ClientNFT {
     }
 
     try {
-      /* Checking the balance */
-      Logger.info("Checking user's balance...");
-      await this.hederaSdk.checkBalance();
-
       /* Storing the Media */
       Logger.info('Saving the medias and metadata on FileCoin...');
       for (const [index, nft] of tokenDto.nfts.entries()) {
-        const cid = await storeNFT({
-          token: this.nftStorageApiKey,
-          media: nft.media,
-        });
-
-        Logger.info(
-          `Media [${index + 1}/${tokenDto.nfts.length}] saved on FileCoin.`,
-        );
-
-        cids.push(cid);
-
         const metadataCid = await storeMetadata({
           token: this.nftStorageApiKey,
           ...nft,
           customRoyaltyFee: tokenDto.customRoyaltyFee,
           supply: supply ?? 1,
-          cid,
+          media: nft.media,
         });
 
         Logger.info(
-          `Metadata [${index + 1}/${tokenDto.nfts.length}] saved on FileCoin.`,
+          `Metadata [${index + 1}/${tokenDto.nfts.length}] saved on FileCoin. ${metadataCid}`,
         );
 
         cidsMetadata.push(metadataCid);

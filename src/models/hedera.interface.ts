@@ -57,6 +57,8 @@ export interface CreateNFT {
   customFees?: CustomFee[] | null;
   cids: string[];
   nfts: NFT[];
+  supplyKey?: string;
+  adminKey?: string,
 }
 
 export interface NFTProperties {

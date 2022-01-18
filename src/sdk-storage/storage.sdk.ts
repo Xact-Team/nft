@@ -1,11 +1,11 @@
 import axios from 'axios';
 import { NFTDto } from 'src/models/hedera.interface';
-import {
-  DeleteResponse,
-  UploadResponse,
-} from 'src/models/nft-storage.interface';
-
+import { DeleteResponse } from 'src/models/nft-storage.interface';
+import { NFTStorage, File } from 'nft.storage';
+import * as fs from 'fs';
+import { extname } from 'path';
 const storageBaseUrl = 'https://api.nft.storage';
+const mime = require('mime-types');
 
 export async function storeMetadata({
   token,
@@ -17,63 +17,27 @@ export async function storeMetadata({
   customProperties,
   customRoyaltyFee,
   attributes,
-  cid,
-}: NFTDto & { token: string; cid: string }) {
-  const { data } = await axios.post<UploadResponse>(
-    `${storageBaseUrl}/upload`,
-    {
-      name,
-      description: { type: 'string', description: description },
-      creator,
-      category,
-      supply,
-      properties: customProperties,
-      royalties: customRoyaltyFee,
-      attributes,
-      image: {
-        type: 'string',
-        description: `https://cloudflare-ipfs.com/ipfs/${cid}`,
-      },
-    },
-    {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    },
-  );
-
-  if (!data.ok) {
-    throw new Error(data.error.message);
-  }
-
-  return data.value.cid;
-}
-
-export async function storeNFT({
-  token,
   media,
-}: {
-  token: string;
-  media: string;
-}) {
-  const { data } = await axios.post<UploadResponse>(
-    `${storageBaseUrl}/upload`,
-    {
-      photo: media,
-    },
-    {
-      headers: {
-        'Content-Type': 'image/*',
-        Authorization: `Bearer ${token}`,
-      },
-    },
-  );
+}: NFTDto & { token: string; media: string }) {
+  const file = fs.readFileSync(media);
+  const extension = extname(media);
+  const type = mime.lookup(media);
+  const client = new NFTStorage({ token });
+  const metadata = await client.store({
+    name,
+    description,
+    creator,
+    category,
+    supply,
+    properties: JSON.stringify(customProperties),
+    royalties: customRoyaltyFee,
+    attributes,
+    image: new File([file], `media${extension}`, {
+      type,
+    }),
+  });
 
-  if (!data.ok) {
-    throw new Error(data.error.message);
-  }
-
-  return data.value.cid;
+  return metadata.url;
 }
 
 export async function deleteNFT({
@@ -88,4 +52,18 @@ export async function deleteNFT({
       Authorization: `Bearer ${token}`,
     },
   });
+}
+
+export function getExtension(base64: string) {
+  const firstChar = base64.charAt(0);
+  switch (firstChar) {
+    case '/':
+      return 'jpg';
+    case 'i':
+      return 'png';
+    case 'R':
+      return 'gif';
+    case 'U':
+      return 'webp';
+  }
 }

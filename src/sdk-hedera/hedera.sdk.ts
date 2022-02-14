@@ -1,9 +1,9 @@
 import {
-    AccountBalanceQuery,
     Client,
     CustomFixedFee,
     CustomRoyaltyFee,
     Hbar,
+    AccountId,
     NftId,
     PrivateKey,
     TokenCreateTransaction,
@@ -11,7 +11,6 @@ import {
     TokenSupplyType,
     TokenType,
 } from '@hashgraph/sdk';
-import Logger from 'js-logger';
 import axios, {AxiosResponse} from 'axios';
 import {
     Fees,
@@ -43,7 +42,6 @@ export class HederaSdk {
                         supply,
                         cids,
                         nfts,
-                        supplyKey,
                         adminKey,
                     }: CreateNFT): Promise<NftCreated> {
         try {
@@ -79,6 +77,7 @@ export class HederaSdk {
                 .setMaxSupply(supply ?? nfts.length)
                 .setTreasuryAccountId(this.hederaAccount.accountId)
                 .setAutoRenewAccountId(this.hederaAccount.accountId)
+                .setNodeAccountIds([new AccountId(3)])
                 .setCustomFees(customRoyaltyFee);
 
             if (supplyKey) {
